@@ -3,9 +3,9 @@ Contributors: galaxyweblinks
 Tags: WordPress feeds, disable, RSS, atom, feeds 
 Donate link: https://www.galaxyweblinks.com/
 Requires at least: 4.9 or higher
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,10 @@ Disable Feeds WP is a WordPress plugin to disable all RSS/Atom/RDF WordPress fee
 
 There are a couple of options to tweak the plugin's behavior - go to `Settings -> Reading` to see them.
 
-If you come across any bugs or have any suggestions, please email or contact us at vivek.jha@galaxyweblinks.in
+Here’s a link to the documentation for the plugin. This will help you learn more about its features and how to use it.
+<strong>[Documentation](https://wp-plugins.galaxyweblinks.com/wp-plugins/disable-feeds-wp/doc/)</strong>
+
+For any feedback or queries regarding this plugin, please contact our [Support team](https://wp-plugins.galaxyweblinks.com/contact/).
 
 
 == Frequently Asked Questions ==
@@ -43,6 +46,9 @@ In `Settings -> Reading` you will find an option to allow global feeds. All othe
 
 == Changelog ==
 
+= 1.3 =
+Stable Release
+
 = 1.2 =
 Stable Release
 
@@ -53,6 +59,9 @@ Fixed the deactivate plugin issue
 First Stable Release
 
 == Upgrade Notice ==
+
+= 1.3 =
+Stable Release
 
 = 1.2 =
 Stable Release
