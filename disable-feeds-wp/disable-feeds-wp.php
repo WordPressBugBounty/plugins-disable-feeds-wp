@@ -3,7 +3,7 @@
 *  Plugin Name: Disable Feeds WP
 *  Plugin URI: https://wordpress.org/plugins/disable-feeds-wp/
 *  Description: Disable Feeds WP is a WordPress plugin to disable all RSS/Atom/RDF WordPress feeds on your website/blog. It is very useful if you use WordPress purely as a content management system (and not for blogging). All requests for feeds will be redirected to the corresponding HTML content.
-*  Version: 1.3
+*  Version: 1.4
 *  Author: Galaxy Weblinks
 *  Author URI: http://galaxyweblinks.com
 *  Text Domain: disable-feeds-wp
@@ -64,7 +64,7 @@ class DFWP_Disable_Feeds {
         if ( is_admin() ) {
             add_action( 'admin_init', array( $this, 'dfwp_admin_setup' ) );
             add_filter( 'plugin_action_links', array( $this, 'dfwp_disable_settings_link' ), 10, 2 );
-            add_filter( 'plugin_row_meta', array( &$this,'dfwp_add_custom_plugin_links') , 10, 2);
+            add_filter( 'plugin_row_meta', array( &$this,'dfwp_added_custom_plugin_links') , 10, 2);
         } else {
             add_action( 'wp_loaded', array( $this, 'dfwp_remove_links' ) );
             add_action( 'template_redirect', array( $this, 'dfwp_filter_feeds' ), 1 );
@@ -77,8 +77,7 @@ class DFWP_Disable_Feeds {
      * @param $links, $file
      * @return $links [array]
      */
-    function dfwp_add_custom_plugin_links($links, $file) {
-        // Replace 'your-plugin-folder/your-plugin-file.php' with your actual plugin file path
+    function dfwp_added_custom_plugin_links($links, $file) {
         if ($file === 'disable-feeds-wp/disable-feeds-wp.php') {
             $links[] = '<a href="https://wp-plugins.galaxyweblinks.com/wp-plugins/disable-feeds-wp/doc/" target="_blank">Documentation</a>';
             $links[] = '<a href="https://wp-plugins.galaxyweblinks.com/contact/" target="_blank">Contact Support</a>';
