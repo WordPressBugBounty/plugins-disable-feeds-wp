@@ -3,7 +3,7 @@
 *  Plugin Name: Disable Feeds WP
 *  Plugin URI: https://wordpress.org/plugins/disable-feeds-wp/
 *  Description: Disable Feeds WP is a WordPress plugin to disable all RSS/Atom/RDF WordPress feeds on your website/blog. It is very useful if you use WordPress purely as a content management system (and not for blogging). All requests for feeds will be redirected to the corresponding HTML content.
-*  Version: 1.4
+*  Version: 1.5
 *  Author: Galaxy Weblinks
 *  Author URI: http://galaxyweblinks.com
 *  Text Domain: disable-feeds-wp
@@ -69,7 +69,11 @@ class DFWP_Disable_Feeds {
             add_action( 'wp_loaded', array( $this, 'dfwp_remove_links' ) );
             add_action( 'template_redirect', array( $this, 'dfwp_filter_feeds' ), 1 );
             add_filter( 'bbp_request', array( $this, 'dfwp_filter_bbp_feeds' ), 9 );
+            add_action( 'init', array( $this, 'dfwp_remove_rewrite_rules' ) );
         }
+        // Flush rewrite rules on activation and deactivation
+        register_activation_hook(__FILE__, array($this, 'dfwp_flush_rewrite_rules'));
+        register_deactivation_hook(__FILE__, array($this, 'dfwp_flush_rewrite_rules'));
     }
 
     /**
@@ -148,6 +152,37 @@ class DFWP_Disable_Feeds {
     public function dfwp_remove_links(){
         remove_action('wp_head', 'feed_links', 2);
         remove_action('wp_head', 'feed_links_extra', 3);
+    }
+
+    /**
+    * Disable feed rewrite rules completely
+    * 
+    * @param array $rules Existing rewrite rules
+    * @return array Modified rewrite rules
+    */
+    public function dfwp_disable_feed_rewrites($rules) {
+        if ($this->dfwp_redirect_status() === 'off') {
+            foreach ($rules as $rule => $rewrite) {
+                if (strpos($rewrite, 'feed=') !== false) {
+                    unset($rules[$rule]);
+                }
+            }
+        }
+        return $rules;
+    }
+
+    /**
+     * Add the filter to disable rewrite rules on init
+     */
+    public function dfwp_remove_rewrite_rules() {
+        add_filter('rewrite_rules_array', array($this, 'dfwp_disable_feed_rewrites'));
+    }
+
+    /**
+     * Flush rewrite rules when activating or deactivating the plugin
+     */
+    public function dfwp_flush_rewrite_rules() {
+        flush_rewrite_rules();
     }
 
     /**
