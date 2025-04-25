@@ -3,7 +3,7 @@
 *  Plugin Name: Disable Feeds WP
 *  Plugin URI: https://wordpress.org/plugins/disable-feeds-wp/
 *  Description: Disable Feeds WP is a WordPress plugin to disable all RSS/Atom/RDF WordPress feeds on your website/blog. It is very useful if you use WordPress purely as a content management system (and not for blogging). All requests for feeds will be redirected to the corresponding HTML content.
-*  Version: 1.5
+*  Version: 1.6
 *  Author: Galaxy Weblinks
 *  Author URI: http://galaxyweblinks.com
 *  Text Domain: disable-feeds-wp
