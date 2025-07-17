@@ -3,7 +3,7 @@
 *  Plugin Name: Disable Feeds WP
 *  Plugin URI: https://wordpress.org/plugins/disable-feeds-wp/
 *  Description: Disable Feeds WP is a WordPress plugin to disable all RSS/Atom/RDF WordPress feeds on your website/blog. It is very useful if you use WordPress purely as a content management system (and not for blogging). All requests for feeds will be redirected to the corresponding HTML content.
-*  Version: 1.6
+*  Version: 1.7
 *  Author: Galaxy Weblinks
 *  Author URI: http://galaxyweblinks.com
 *  Text Domain: disable-feeds-wp
@@ -40,11 +40,11 @@ if ( !defined('dfwp_plugin_Path') ) {
 class DFWP_Disable_Feeds {
 
     /**
-	 * Instance class object
-	 *
-	 * @var   object
-	 * @since 1.0
-	 */
+     * Instance class object
+     *
+     * @var   object
+     * @since 1.0
+     */
     private static $instance = null;
 
     public static function get_instance(){
@@ -56,10 +56,10 @@ class DFWP_Disable_Feeds {
     }
 
     /**
-	 * Initialize the class sets its properties.
+     * Initialize the class sets its properties.
      * 
-	 * @since 1.0
-	 */
+     * @since 1.0
+     */
     private function __construct(){
         if ( is_admin() ) {
             add_action( 'admin_init', array( $this, 'dfwp_admin_setup' ) );
@@ -83,8 +83,8 @@ class DFWP_Disable_Feeds {
      */
     function dfwp_added_custom_plugin_links($links, $file) {
         if ($file === 'disable-feeds-wp/disable-feeds-wp.php') {
-            $links[] = '<a href="https://wp-plugins.galaxyweblinks.com/wp-plugins/disable-feeds-wp/doc/" target="_blank">Documentation</a>';
-            $links[] = '<a href="https://wp-plugins.galaxyweblinks.com/contact/" target="_blank">Contact Support</a>';
+            $links[] = '<a href="https://wp-plugins.galaxyweblinks.com/wp-plugins/disable-feeds-wp/doc/" target="_blank">' . esc_html__( 'Documentation', 'disable-feeds-wp' ) . '</a>';
+            $links[] = '<a href="https://wp-plugins.galaxyweblinks.com/contact/" target="_blank">' . esc_html__( 'Contact Support', 'disable-feeds-wp' ) . '</a>';
         }
         return $links;
     }
@@ -95,7 +95,7 @@ class DFWP_Disable_Feeds {
     * Plugin admin manu into Settings -> Reading
     */
     public function dfwp_admin_setup(){
-        add_settings_field( 'dfwp_redirect', 'Disable Feeds', array( $this, 'dfwp_settings_field' ), 'reading' );
+        add_settings_field( 'dfwp_redirect', __( 'Disable Feeds', 'disable-feeds-wp' ), array( $this, 'dfwp_settings_field' ), 'reading' );
         register_setting( 'reading', 'dfwp_redirect' );
     }
 
@@ -110,7 +110,7 @@ class DFWP_Disable_Feeds {
         }
 
         if ( $plugin == $plugin_file ) {
-            $settings = array('settings' => '<a href="' . admin_url('options-reading.php') . '">' . __('Settings', 'dfwp') . '</a>');
+            $settings = array('settings' => '<a href="' . admin_url('options-reading.php') . '">' . __('Settings', 'disable-feeds-wp') . '</a>');
             $actions = array_merge($settings, $actions);
         }
         return $actions;
@@ -123,20 +123,20 @@ class DFWP_Disable_Feeds {
 
         $redirect = $this->dfwp_redirect_status();
         
-        echo '<p>' . esc_html( 'By default, all feeds are disabled, and all requests for feeds are redirected to the corresponding page content. You can tweak this behaviour below.') . '</p>';
+        echo '<p>' . esc_html__('By default, all feeds are disabled, and all requests for feeds are redirected to the corresponding page content. You can tweak this behaviour below.', 'disable-feeds-wp') . '</p>';
         echo '<p><input type="radio" name="dfwp_redirect" value="on" id="dfwp_redirect_redirect_yes" class="radio" ' . checked( $redirect, 'on', false ) . '/>';
-        echo '<label for="dfwp_redirect_redirect_yes">' . esc_html('Redirect feed requests on the home page.') . '</label>';
+        echo '<label for="dfwp_redirect_redirect_yes">' . esc_html__('Redirect feed requests on the home page.', 'disable-feeds-wp') . '</label>';
         echo '<br /><input type="radio" name="dfwp_redirect" value="off" id="dfwp_redirect_redirect_no" class="radio" ' . checked( $redirect, 'off', false ) . '/>';
-        echo '<label for="dfwp_redirect_redirect_no">' . esc_html('Redirect feed requests on the 404 page.') . ' </label></p>';
-        echo '<br /><h3>' . esc_html('Finding Your Feed URL') . '</h3>';
-        echo '<p><strong>' . esc_html('There are four possible URLs for each of your feeds. Any of these will work.') . '</strong></p>';
+        echo '<label for="dfwp_redirect_redirect_no">' . esc_html__('Redirect feed requests on the 404 page.', 'disable-feeds-wp') . ' </label></p>';
+        echo '<br /><h3>' . esc_html__('Finding Your Feed URL', 'disable-feeds-wp') . '</h3>';
+        echo '<p><strong>' . esc_html__('There are four possible URLs for each of your feeds. Any of these will work.', 'disable-feeds-wp') . '</strong></p>';
         echo '<ol>';
         echo '<li>' . esc_url(home_url()) . '/?feed=rss</li>';
         echo '<li>' . esc_url(home_url()) . '/?feed=rss2</li>';
         echo '<li>' . esc_url(home_url()) . '/?feed=rdf</li>';
         echo '<li>' . esc_url(home_url()) . '/?feed=atom</li>';
         echo '</ol>';
-        echo '<p><strong>' . esc_html('If you are using custom permalinks, you should be able to reach them through this usage:') . '</strong></p>';
+        echo '<p><strong>' . esc_html__('If you are using custom permalinks, you should be able to reach them through this usage:', 'disable-feeds-wp') . '</strong></p>';
         echo '<ol>';
         echo '<li>' . esc_url(home_url()) . '/feed/</li>';
         echo '<li>' . esc_url(home_url()) . '/feed/rss/</li>';
