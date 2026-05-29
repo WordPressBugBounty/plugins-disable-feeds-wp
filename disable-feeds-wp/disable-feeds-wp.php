@@ -3,7 +3,7 @@
 *  Plugin Name: Disable Feeds WP
 *  Plugin URI: https://wordpress.org/plugins/disable-feeds-wp/
 *  Description: Disable Feeds WP is a WordPress plugin to disable all RSS/Atom/RDF WordPress feeds on your website/blog. It is very useful if you use WordPress purely as a content management system (and not for blogging). All requests for feeds will be redirected to the corresponding HTML content.
-*  Version: 1.7
+*  Version: 1.8
 *  Author: Galaxy Weblinks
 *  Author URI: http://galaxyweblinks.com
 *  Text Domain: disable-feeds-wp
@@ -96,7 +96,26 @@ class DFWP_Disable_Feeds {
     */
     public function dfwp_admin_setup(){
         add_settings_field( 'dfwp_redirect', __( 'Disable Feeds', 'disable-feeds-wp' ), array( $this, 'dfwp_settings_field' ), 'reading' );
-        register_setting( 'reading', 'dfwp_redirect' );
+        register_setting(
+            'reading',
+            'dfwp_redirect',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'dfwp_sanitize_redirect_setting' ),
+                'default'           => 'on',
+            )
+        );
+    }
+
+    /**
+     * Sanitize the redirect setting value.
+     *
+     * @param mixed $value Setting value from the form.
+     * @return string 'on' or 'off'.
+     */
+    public function dfwp_sanitize_redirect_setting( $value ) {
+        $value = is_string( $value ) ? $value : '';
+        return in_array( $value, array( 'on', 'off' ), true ) ? $value : 'on';
     }
 
     /**
@@ -246,8 +265,8 @@ class DFWP_Disable_Feeds {
         global $wp_rewrite, $wp_query;
 
         if ($this->dfwp_redirect_status() == 'on') {
-            if (isset($_GET['feed'])) {
-                wp_redirect( esc_url_raw(remove_query_arg('feed')), 301 );
+            if ( null !== filter_input( INPUT_GET, 'feed', FILTER_DEFAULT ) ) {
+                wp_safe_redirect( esc_url_raw( remove_query_arg( 'feed' ) ), 301 );
                 exit;
             }
 
@@ -264,11 +283,16 @@ class DFWP_Disable_Feeds {
             $struct = preg_quote($struct, '#');
             $struct = str_replace('%feed%', '(\w+)?', $struct);
             $struct = preg_replace('#/+#', '/', $struct);
-            $requested_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            $requested_url = esc_url($requested_url);
-            $new_url = esc_url(preg_replace('#' . $struct . '/?$#', '', $requested_url));
-            if ($new_url != $requested_url) {
-                wp_redirect(esc_url_raw($new_url), 301);
+            if ( ! isset( $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'] ) ) {
+                return;
+            }
+            $host        = sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
+            $request_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+            $requested_url = ( is_ssl() ? 'https://' : 'http://' ) . $host . $request_uri;
+            $requested_url = esc_url( $requested_url );
+            $new_url = esc_url( preg_replace( '#' . $struct . '/?$#', '', $requested_url ) );
+            if ( $new_url != $requested_url ) {
+                wp_safe_redirect( esc_url_raw( $new_url ), 301 );
                 exit;
             }
 

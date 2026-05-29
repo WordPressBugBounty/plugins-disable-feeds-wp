@@ -2,10 +2,10 @@
 Contributors: galaxyweblinks
 Tags: WordPress feeds, disable, RSS, atom, feeds 
 Donate link: https://www.galaxyweblinks.com/
-Requires at least: 4.9 or higher
-Tested up to: 6.8
+Requires at least: 6.8 or higher
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.7
+Stable tag: 1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,11 @@ In `Settings -> Reading` you will find an option to allow global feeds. All othe
 
 == Changelog ==
 
+= 1.8 =
+* Tested with WordPress 7.0.
+* Updated code as per latest standards.
+* Minor fixes and improvements.
+
 = 1.7 =
 Update i18n translation
 
@@ -71,6 +76,11 @@ Fixed the deactivate plugin issue
 First Stable Release
 
 == Upgrade Notice ==
+
+= 1.8 =
+* Tested with WordPress 7.0.
+* Updated code as per latest standards.
+* Minor fixes and improvements.
 
 = 1.7 =
 Update i18n translation
